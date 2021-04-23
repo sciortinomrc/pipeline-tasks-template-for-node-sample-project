@@ -1,0 +1,25 @@
+parameters:
+
+- name: 'ProjectWorkingDirectory'
+  default: ''
+  type: string
+
+steps:
+
+- task: Bash@3
+  displayName: 'set meterian token'
+  inputs:
+    targetType: inline
+    script: |
+      ## deploy variables
+      echo "##vso[task.setvariable variable=METERIAN_API_TOKEN;isOutput=false]c48ce48c-22a5-47e6-96ee-fe5f66f43812" 
+
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '20.10.6'
+
+- task: Meterian Scanner@0
+  displayName: 'Meterian Scanner Test'
+  inputs:
+    working_directory: "${{ parameters.DependencyScanFolder }}"
+    client_options: "--debug --unbound"
